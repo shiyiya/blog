@@ -4,15 +4,24 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "serve": "node run.js"
+    "init": "node install/index.js",
+    "serve": "nodemon run.js"
   },
   "dependencies": {
-    "koa": "^2.6.2"
+    "jsonwebtoken": "^8.4.0",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-jwt": "^3.5.1",
+    "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6",
+    "md5": "^2.2.1",
+    "mysql": "^2.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.3",
-    "@babel/register": "^7.0.0"
+    "@babel/register": "^7.0.0",
+    "nodemon": "^1.18.9"
   }
 }

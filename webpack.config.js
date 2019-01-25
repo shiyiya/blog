@@ -33,7 +33,7 @@ const config = {
   },
   devtool: isProd() ? false : 'inline-source-map',
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.styl']
   },
   module: {
     rules: [
@@ -54,23 +54,40 @@ const config = {
         ]
       },
       {
+        test: /\.styl$/,
+        use: [
+          isProd()
+            ? { loader: MiniCssExtractPlugin.loader }
+            : { loader: 'style-loader' },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'stylus-loader'
+          }
+        ]
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: '/static/img/[name].[hash:7].[ext]'
+          name: '/static/img/[name].[contenthash:8].[ext]'
         }
       }
     ]
   },
   plugins: [
     new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV.trim())
+      },
       __DEV__: isDev(),
       __PROD__: isProd(),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV.trim())
+      BASE_API: isDev() ? '/api' : ''
     }),
     new MiniCssExtractPlugin(
-      isProd()
+      isDev()
         ? '[name].css'
         : {
             filename: 'css/[name].css',
@@ -81,7 +98,7 @@ const config = {
       inject: true,
       filename: 'index.html',
       template: 'index.html',
-      minify: isProd() ? minify : {}
+      minify: isDev() ? {} : minify
     })
   ]
 }
@@ -104,6 +121,25 @@ if (isDev()) {
     }
   }
 } else {
-  config.optimization = {}
+  config.optimization = {
+    runtimeChunk: 'single',
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      minChunks: 1,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module, chunks, chcheGroupKey) {
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1]
+            return `${packageName.replace('@', '')}`
+          }
+        }
+      }
+    }
+  }
 }
 module.exports = config
