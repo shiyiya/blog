@@ -38,15 +38,28 @@ for (const rp of roles_permission) {
   )
 }
 
-// 创建用户并设置为管理员
+// 创建用户
 DBModel.query(
   'insert into users set name=?,password=?,created=?;',
   Object.values(defaultAdmin)
 ).then(res => {
+  // 设置为管理员
   DBModel.query('insert into users_role set user_id=?,role_id=?', [
     res.insertId,
     0
   ])
+  // 发布第一篇文章
+  DBModel.publishPost([res.insertId, 'hello world!', 'hello world!', 1]).then(
+    _ => {
+      // 评论文章
+      DBModel.comment([
+        res.insertId,
+        defaultAdmin.name,
+        _.insertId,
+        'hello world'
+      ])
+    }
+  )
 })
 
 console.log('数据初始化完成，`ctrl + c` 关闭终端')

@@ -5,7 +5,7 @@ const users = `
     name varchar(32) default NULL,
     password varchar(64) default NULL,
     mail varchar(200) default NULL,
-    created int(10) unsigned default now(),
+    created int(10) unsigned default '0',
     PRIMARY KEY  (uid),
     UNIQUE KEY name (name),
     UNIQUE KEY mail (mail)

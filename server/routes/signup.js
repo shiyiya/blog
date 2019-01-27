@@ -9,16 +9,16 @@ export default async (ctx, next) => {
     ctx.body = { status: 0, msg: '昵称已被占用' }
   } else {
     try {
-      const userInsertInfo = await DBModel.signup([
-        username,
-        md5(password),
-      ])
+      const userInsertInfo = await DBModel.signup([username, md5(password)])
       if (!!author) {
         await DBModel.setUserRoles(userInsertInfo.insertId, 1)
       }
       ctx.body = {
         status: 1,
-        msg: '注册成功'
+        msg: '注册成功',
+        data: {
+          user_id: userInsertInfo.insertId
+        }
       }
     } catch (err) {
       // 回滚

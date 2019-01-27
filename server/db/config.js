@@ -1,3 +1,5 @@
+import md5 from 'md5'
+
 const mysqlConfig = {
   host: '127.0.0.1',
   port: '3306',
@@ -9,12 +11,12 @@ const mysqlConfig = {
 
 const defaultAdmin = {
   name: 'admin',
-  password: 'admin',
+  password: md5('admin'),
   created: Date.now()
-  //roles: 'admin'
+  //roles: 0
 }
 
-const JWT_KEY = 'secret'
+const JWT_KEY = 'Shiyi'
 
 // 权限
 const permissions = [
