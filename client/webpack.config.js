@@ -3,9 +3,9 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const isDev = () => process.env.NODE_ENV.trim() === 'development';
+const isDev = process.env.NODE_ENV.trim() === 'development';
 
-const isProd = () => process.env.NODE_ENV.trim() === 'production';
+const isProd = process.env.NODE_ENV.trim() === 'production';
 
 const minify = {
   removeComments: true,
@@ -21,17 +21,15 @@ const minify = {
 };
 
 const config = {
-  mode: isProd() ? 'production' : 'development',
+  mode: isProd ? 'production' : 'development',
   entry: ['react-hot-loader/patch', path.resolve(__dirname, './src/index.js')],
   output: {
     path: path.resolve(__dirname, './dist'),
-    filename: isProd() ? '[name].[chunkhash:8].js' : '[name].js',
-    chunkFilename: isProd()
-      ? '[name].chunk.[chunkhash:8].js'
-      : '[name].chunk.js',
-    publicPath: isDev() ? '/' : '/',
+    filename: isProd ? '[name].[chunkhash:8].js' : '[name].js',
+    chunkFilename: isProd ? '[name].chunk.[chunkhash:8].js' : '[name].chunk.js',
+    publicPath: isDev ? '/' : '/',
   },
-  devtool: isProd() ? false : 'inline-source-map',
+  devtool: isProd ? false : 'inline-source-map',
   resolve: {
     extensions: ['.js', '.jsx', '.styl'],
   },
@@ -54,7 +52,7 @@ const config = {
       {
         test: /\.css$/,
         use: [
-          isProd()
+          isProd
             ? { loader: MiniCssExtractPlugin.loader }
             : { loader: 'style-loader' },
           {
@@ -65,7 +63,7 @@ const config = {
       {
         test: /\.styl$/,
         use: [
-          isProd()
+          isProd
             ? { loader: MiniCssExtractPlugin.loader }
             : { loader: 'style-loader' },
           {
@@ -90,13 +88,13 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV.trim()),
-        __DEV__: isDev(),
-        __PROD__: isProd(),
-        BASE_API: isDev() ? "'/api'" : "''",
+        __DEV__: isDev,
+        __PROD__: isProd,
+        BASE_API: isDev ? "'/api'" : "''",
       },
     }),
     new MiniCssExtractPlugin(
-      isDev()
+      isDev
         ? '[name].css'
         : {
             filename: 'css/[name].css',
@@ -107,14 +105,14 @@ const config = {
       inject: true,
       filename: 'index.html',
       template: 'index.html',
-      minify: isDev() ? {} : minify,
+      minify: isDev ? {} : minify,
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
 };
 
-if (isDev()) {
+if (isDev) {
   config.devServer = {
     open: true,
     hot: true,

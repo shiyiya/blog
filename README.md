@@ -1,5 +1,5 @@
 # waiting
-
+Koa + React = Simple Blog.
 
 ## 技术栈
 

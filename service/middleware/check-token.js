@@ -32,7 +32,10 @@ export default opts => (ctx, next) => {
     const { key } = opts;
 
     try {
-      jwt.verify(token, key);
+      const decoded = jwt.verify(token, key);
+      if (decoded.exp <= Date.now() / 1000) {
+        ctx.throw(401, 'Unavailable token');
+      }
     } catch (err) {
       ctx.throw(401, 'Invalid token');
     }
