@@ -41,7 +41,7 @@ const roles_permission = `
   CREATE TABLE if not exists roles_permission(
     id int(10) unsigned NOT NULL auto_increment,
     role_id int(10) NOT NULL,
-    permission_id varchar(16) NOT NULL,
+    permission_id int(10) NOT NULL,
     PRIMARY KEY  (id)
   ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
 
