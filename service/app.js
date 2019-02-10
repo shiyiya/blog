@@ -8,6 +8,7 @@ import koaStatic from 'koa-static';
 import { JWT_KEY } from './db/config';
 import routes from './routes/index';
 import checkToken from './middleware/check-token';
+import logger from './utils/log4js';
 
 const app = new Koa();
 const router = new Router();
@@ -22,15 +23,16 @@ app.use(
       /\/post\/\d+\/update/,
       /\/post\/\d+\/review/,
     ],
-  })
+  }),
 );
 
 app
+  .use(logger())
   .use(cors())
   .use(parser())
   .use(routes(router))
   .use(koaStatic(path.join(__dirname, 'public')));
 
 app.listen(3000, 'localhost', () => {
-  console.log('----- server listening ! -----');
+  console.log(`[${new Date().toISOString()}]: server listening !`);
 });

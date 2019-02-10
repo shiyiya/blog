@@ -8,8 +8,12 @@ import {
 } from '../db/config';
 
 for (const _key in mysqlSchema) {
-  DBModel.query(mysqlSchema[_key]);
-  console.log(`created table --> ${_key}`);
+  try {
+    DBModel.query(mysqlSchema[_key]);
+    console.log(`[created table]: --> ${_key}`);
+  } catch (err) {
+    console.log(`[create database error!]: --> ${_key}`);
+  }
 }
 
 const DBpermission = [];

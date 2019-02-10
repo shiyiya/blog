@@ -6,6 +6,15 @@ export default async ctx => {
 
   const userInfo = await DBModel.findUserByToken(token);
 
+  if (!userInfo[0]) {
+    ctx.status = 401;
+    ctx.body = {
+      status: 0,
+      msg: 'Unavailable token',
+    };
+    return;
+  }
+
   const userRole = await DBModel.searchUserRolesByUser(userInfo[0].uid);
   let userPermission = await DBModel.searchUserPermissionByRole(
     userRole[0].role_id
@@ -25,6 +34,7 @@ export default async ctx => {
       status: 0,
       msg: 'You don"t have permission',
     };
+    return;
   }
 
   const { title, text, allowComment } = ctx.request.body;
@@ -34,6 +44,7 @@ export default async ctx => {
       status: 0,
       msg: 'Parameters incomplete',
     };
+    return;
   }
 
   const res = await DBModel.publishPost([
