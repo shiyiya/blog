@@ -3,7 +3,7 @@ import signin from './signin';
 import posts from './posts';
 import post from './post';
 
-module.exports = router => {
+module.exports = (router) => {
   // 注册
   router.post('/signup', signup);
 

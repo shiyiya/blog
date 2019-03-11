@@ -45,86 +45,82 @@ const styles = theme => ({
   },
 });
 
-class Index extends React.PureComponent {
-  render() {
-    const { classes, history } = this.props;
-
-    return (
-      <>
-        <Card className={classes.card} style={{ marginTop: 0 }}>
-          <CardActionArea onClick={() => history.push('/')}>
-            <CardMedia
-              className={classes.media}
-              image="https://i.loli.net/2018/10/05/5bb7144897e8c.jpg"
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                MATERIAL-UI
-              </Typography>
-              <Typography component="p">
-                React components that implement Google s Material Design.
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <Divider />
-          <div className={classes.postMeta}>
-            <Avatar
-              alt="author"
-              src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
-              className={classes.avatar}
-            />
-            <div style={{ flex: 1 }}>
-              <Typography inline className={classes.postMetaItem}>
-                2018 年 12 月 29 日
-              </Typography>
-              <Typography inline className={classes.postMetaItem}>
-                6 条评论
-              </Typography>
-            </div>
-            <IconButton>
-              <ChevronRightIcon />
-            </IconButton>
+function Index({ classes, history }) {
+  return (
+    <>
+      <Card className={classes.card} style={{ marginTop: 0 }}>
+        <CardActionArea onClick={() => history.push('/post')}>
+          <CardMedia
+            className={classes.media}
+            image="https://i.loli.net/2018/10/05/5bb7144897e8c.jpg"
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              MATERIAL-UI
+            </Typography>
+            <Typography component="p">
+              React components that implement Google s Material Design.
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <Divider />
+        <div className={classes.postMeta}>
+          <Avatar
+            alt="author"
+            src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
+            className={classes.avatar}
+          />
+          <div style={{ flex: 1 }}>
+            <Typography inline className={classes.postMetaItem}>
+              2018 年 12 月 29 日
+            </Typography>
+            <Typography inline className={classes.postMetaItem}>
+              6 条评论
+            </Typography>
           </div>
-        </Card>
+          <IconButton>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
+      </Card>
 
-        <Card className={classes.card}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image="https://i.loli.net/2018/10/05/5bb7144897e8c.jpg"
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                Title
-              </Typography>
-              <Typography component="p">
-                React components that implement Google s Material Design.
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-          <Divider />
-          <div className={classes.postMeta}>
-            <Avatar
-              alt="author"
-              src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
-              className={classes.avatar}
-            />
-            <div style={{ flex: 1 }}>
-              <Typography className={classes.postMetaItem}>
-                2018 年 12 月 29 日
-              </Typography>
-              <Typography className={classes.postMetaItem}>6 条评论</Typography>
-            </div>
-            <IconButton>
-              <ChevronRightIcon />
-            </IconButton>
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image="https://i.loli.net/2018/10/05/5bb7144897e8c.jpg"
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              Title
+            </Typography>
+            <Typography component="p">
+              React components that implement Google s Material Design.
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <Divider />
+        <div className={classes.postMeta}>
+          <Avatar
+            alt="author"
+            src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
+            className={classes.avatar}
+          />
+          <div style={{ flex: 1 }}>
+            <Typography className={classes.postMetaItem}>
+              2018 年 12 月 29 日
+            </Typography>
+            <Typography className={classes.postMetaItem}>6 条评论</Typography>
           </div>
-        </Card>
-      </>
-    );
-  }
+          <IconButton>
+            <ChevronRightIcon />
+          </IconButton>
+        </div>
+      </Card>
+    </>
+  );
 }
 
 Index.propTypes = {

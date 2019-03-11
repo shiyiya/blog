@@ -36,14 +36,23 @@ function formatLog(ctx, err) {
     request: { body },
     header,
   } = ctx;
-  if (err) return { ip, method, url, header, body, err };
-  return { ip, method, url, body, userAgent: header['user-agent'] };
+  if (err) {
+    return {
+      ip, method, url, header, body, err,
+    };
+  }
+  return {
+    ip, method, url, body, userAgent: header['user-agent'],
+  };
 }
 
 export default function logger() {
   return async (ctx, next) => {
     try {
+      const start = new Date();
       await next();
+      const ms = new Date() - start;
+      console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
       log4js.getLogger('response').info(formatLog(ctx));
     } catch (err) {
       console.log(err);

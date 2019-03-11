@@ -9,7 +9,7 @@ const users = `
     PRIMARY KEY  (uid),
     UNIQUE KEY name (name),
     UNIQUE KEY mail (mail)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const roles = `
   CREATE TABLE if not exists roles (
@@ -18,7 +18,7 @@ const roles = `
     name varchar(16),
     description varchar(225) default NULL,
     PRIMARY KEY  (id)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const permissions = `
   CREATE TABLE if not exists permissions(
@@ -27,7 +27,7 @@ const permissions = `
     name varchar(16) NOT NULL,
     description varchar(225) default NULL,
     PRIMARY KEY  (id)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const users_role = `
   CREATE TABLE if not exists users_role(
@@ -35,7 +35,7 @@ const users_role = `
     user_id int(10) NOT NULL,
     role_id int(10) NOT NUlL,
     PRIMARY KEY  (id)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const roles_permission = `
   CREATE TABLE if not exists roles_permission(
@@ -43,7 +43,7 @@ const roles_permission = `
     role_id int(10) NOT NULL,
     permission_id int(10) NOT NULL,
     PRIMARY KEY  (id)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const posts = `
   CREATE TABLE if not exists posts (
@@ -57,7 +57,7 @@ const posts = `
     allowComment char(1) default '0',
     PRIMARY KEY  (pid),
     KEY created (created)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 const comments = `
   CREATE TABLE if not exists comments (
@@ -72,7 +72,7 @@ const comments = `
     parent int(10) unsigned default '0',
     PRIMARY KEY  (coid),
     KEY created (created)
-  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`
+  ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;`;
 
 export default {
   users,
@@ -81,5 +81,5 @@ export default {
   users_role,
   roles_permission,
   posts,
-  comments
-}
+  comments,
+};

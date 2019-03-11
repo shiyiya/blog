@@ -1,6 +1,6 @@
 import DBModel from '../db/index';
 
-export default async ctx => {
+export default async (ctx) => {
   const token = ctx.header.authorization;
   const ACTION = 'post';
 
@@ -16,15 +16,11 @@ export default async ctx => {
   }
 
   const userRole = await DBModel.searchUserRolesByUser(userInfo[0].uid);
-  let userPermission = await DBModel.searchUserPermissionByRole(
-    userRole[0].role_id
-  );
+  let userPermission = await DBModel.searchUserPermissionByRole(userRole[0].role_id);
 
   userPermission = userPermission.map(up => up.permission_id);
 
-  const rolePermission = await DBModel.selectPermissionById(
-    userPermission.toString()
-  );
+  const rolePermission = await DBModel.selectPermissionById(userPermission.toString());
 
   const hasPermission = rolePermission.some(rp => rp.name === ACTION);
 

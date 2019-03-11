@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from '@material-ui/core/Button';
+import RootRef from '@material-ui/core/RootRef';
 
 import MyDrawer from './Drawer';
 
@@ -126,69 +127,83 @@ const styles = theme => ({
   },
 });
 
-class Layout extends React.Component {
-  state = {
-    open: false,
-  };
+function useOnClickOutside(ref, handler) {
+  useEffect(() => {
+    const listener = event => {
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
+      handler(event);
+    };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('touchstart', listener);
 
-  render() {
-    const { classes, children } = this.props;
-    const { open } = this.state;
-    return (
-      <div className={classes.root}>
-        <AppBar position="fixed">
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              className={classes.menuButton}
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('touchstart', listener);
+    };
+  }, []);
+}
+
+function Layout({ classes, children }) {
+  const ref = useRef(null);
+  const [open, setOpen] = useState(false);
+  useOnClickOutside(ref, () => setOpen(false));
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="fixed">
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={() => setOpen(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+          <RouterLink to="/">
+            <Typography
               color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
+              className={classes.title}
+              variant="h6"
+              noWrap
             >
-              <MenuIcon />
-            </IconButton>
-            <RouterLink to="/">
-              <Typography
-                color="inherit"
-                className={classes.title}
-                variant="h6"
-                noWrap
-              >
-                Material-UI
-              </Typography>
-            </RouterLink>
+              Material-UI
+            </Typography>
+          </RouterLink>
 
-            <div className={classes.grow}>
-              <Button className={classes.button}>Default</Button>
-              <Button className={classes.button}>Default</Button>
-              <Button className={classes.button}>Default</Button>
+          <div className={classes.grow}>
+            <Button className={classes.button}>Default</Button>
+            <Button className={classes.button}>Default</Button>
+            <Button className={classes.button}>Default</Button>
+          </div>
+          <div className={classes.search}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
             </div>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-            </div>
-          </Toolbar>
-        </AppBar>
-        <MyDrawer open={open} handleDrawerClose={this.handleDrawerClose} />
-        <main className={classes.main}>{children}</main>
-      </div>
-    );
-  }
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+            />
+          </div>
+        </Toolbar>
+      </AppBar>
+      <RootRef rootRef={ref}>
+        <MyDrawer
+          ref={ref}
+          open={open}
+          handleDrawerClose={() => setOpen(false)}
+        />
+      </RootRef>
+      <main className={classes.main}>{children}</main>
+    </div>
+  );
 }
 
 Layout.propTypes = {

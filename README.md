@@ -1,15 +1,16 @@
 # waiting
+
 Koa + React = Simple Blog.
 
-## 技术栈
+#### client
 
-前端：
-- "react": "^16.7.0"
-- "react-router-dom": "^4.3.1"
-- "redux": "^4.0.1"
-- "webpack": "^4.28.1"
-- "@babel/core": "^7.2.2"
+- Library: React + Material UI + Mobx
+- Builder: Webpack + Babel
+- Language: ES2016 + Stage-0
+- Test: ×
 
-后台：
-- "koa": "^2.6.2"
-- 
+#### backend
+
+- Library: Koa2
+- Builder: Nodemon / pm2
+- Language: ES2016 + Stage-0

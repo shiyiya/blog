@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
@@ -10,6 +10,7 @@ const styles = theme => ({
     float: 'left',
     [theme.breakpoints.down('md')]: {
       float: 'none',
+      width: 'auto',
     },
   },
   siderWrap: {
@@ -26,47 +27,37 @@ const styles = theme => ({
 });
 
 const WithAside = (WrappedComponentM, WrappedComponentS) => {
-  class WithAside extends React.PureComponent {
-    state = {
-      affix: false,
-    };
-
-    componentDidMount() {
-      document.addEventListener('scroll', this.scrollHandler);
-    }
-
-    componentWillUnmount() {
-      document.removeEventListener('scroll', this.scrollHandler);
-    }
-
-    scrollHandler = evt => {
-      const target = evt.target.scrollingElement;
-      if (target.scrollTop >= 26) {
-        this.setState({ affix: true });
-      } else {
-        this.setState({ affix: false });
-      }
-    };
-
-    render() {
-      const { classes, ...props } = this.props;
-      const { affix } = this.state;
-      return (
-        <div className="clearfix">
-          <div className={classes.container}>
-            <WrappedComponentM {...props} />
-          </div>
-          <aside className={classes.siderWrap}>
-            <div
-              className={classes.sidebarInner}
-              style={{ position: affix ? 'fixed' : 'static' }}
-            >
-              <WrappedComponentS {...props} />
-            </div>
-          </aside>
+  function WithAside({ classes, ...props }) {
+    const [affix, setAffix] = useState(false);
+    useLayoutEffect(() => {
+      const scrollHandler = cb => () => {
+        const Y = window.pageYOffset;
+        if (Y >= 26) {
+          cb(true);
+        } else {
+          cb(false);
+        }
+      };
+      document.addEventListener('scroll', scrollHandler(setAffix));
+      return () => {
+        document.removeEventListener('scroll', scrollHandler(setAffix));
+      };
+    }, []);
+    return (
+      <div className="clearfix">
+        <div className={classes.container}>
+          <WrappedComponentM {...props} />
         </div>
-      );
-    }
+        <aside className={classes.siderWrap}>
+          <div
+            className={classes.sidebarInner}
+            style={{ position: affix ? 'fixed' : 'static' }}
+          >
+            <WrappedComponentS {...props} />
+          </div>
+        </aside>
+      </div>
+    );
   }
 
   WithAside.propTypes = {

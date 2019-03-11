@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --fix *.js",
+    "lint": "eslint --fix ./**/*.js",
     "init": "node install/index.js",
     "serve": "set NODE_ENV=development && nodemon run.js",
     "pm2": "pm2 start run.js",

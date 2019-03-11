@@ -3,7 +3,7 @@ import md5 from 'md5';
 import DBModel from '../db/index';
 import { JWT_KEY } from '../db/config';
 
-export default async (ctx, next) => {
+export default async (ctx) => {
   const { username, password } = ctx.request.body;
   const user = await DBModel.findUserByname(username);
   if (user.length < 1 || user[0].password !== md5(password)) {

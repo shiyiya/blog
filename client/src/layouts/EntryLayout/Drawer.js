@@ -44,67 +44,63 @@ const styles = theme => ({
   },
 });
 
-class MyDrawer extends React.PureComponent {
-  render() {
-    const { classes, theme, open, handleDrawerClose } = this.props;
-
-    return (
-      <nav className={classes.drawer}>
-        <Drawer
-          className={classes.drawer}
-          variant="persistent"
-          anchor="left"
-          open={open}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-        >
-          <div className={classes.drawerHeader}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'ltr' ? (
-                <ChevronLeftIcon />
-              ) : (
-                <ChevronRightIcon />
-              )}
-            </IconButton>
-            <Card className={classes.card}>
-              <CardHeader
-                avatar={
-                  <Avatar
-                    aria-label="Recipe"
-                    className={classes.avatar}
-                    src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
-                  />
-                }
-                title="Hello World"
-                subheader="This is description."
-              />
-            </Card>
-          </div>
-          <Divider />
-          <List>
-            {['Home'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            <ListItem button>
+function MyDrawer({ classes, theme, open, handleDrawerClose }) {
+  return (
+    <nav className={classes.drawer}>
+      <Drawer
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+      >
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? (
+              <ChevronLeftIcon />
+            ) : (
+              <ChevronRightIcon />
+            )}
+          </IconButton>
+          <Card className={classes.card}>
+            <CardHeader
+              avatar={
+                <Avatar
+                  aria-label="Recipe"
+                  className={classes.avatar}
+                  src="https://runtua.cn/usr/themes/sagiri/img/author.jpg"
+                />
+              }
+              title="Hello World"
+              subheader="This is description."
+            />
+          </Card>
+        </div>
+        <Divider />
+        <List>
+          {['Home'].map((text, index) => (
+            <ListItem button key={text}>
               <ListItemIcon>
-                <AccountCircle />
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
-              <ListItemText primary="Account" />
+              <ListItemText primary={text} />
             </ListItem>
-          </List>
-        </Drawer>
-      </nav>
-    );
-  }
+          ))}
+        </List>
+        <Divider />
+        <List>
+          <ListItem button>
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary="Account" />
+          </ListItem>
+        </List>
+      </Drawer>
+    </nav>
+  );
 }
 
 MyDrawer.propTypes = {

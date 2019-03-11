@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['airbnb', 'plugin:react/recommended', 'prettier'],
-  plugins: ['react', 'prettier'],
+  plugins: ['react', 'prettier', 'react-hooks'],
   parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2016,
@@ -17,6 +17,7 @@ module.exports = {
   },
   rules: {
     'prettier/prettier': 'error',
+    'react-hooks/rules-of-hooks': 'error',
 
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/jsx-one-expression-per-line': 0,

@@ -2,7 +2,7 @@ import marked from 'marked';
 import DBModel from '../db/index';
 import { blogInfo } from '../db/config';
 
-export default async ctx => {
+export default async (ctx) => {
   const { offset, limit } = ctx.request.query;
 
   try {

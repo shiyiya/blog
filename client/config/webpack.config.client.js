@@ -1,14 +1,17 @@
 const path = require('path');
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+const baseWebpackConfig = require('./webpack.config.base');
 
 const isDev = process.env.NODE_ENV.trim() === 'development';
 
 const isProd = process.env.NODE_ENV.trim() === 'production';
 
 const minify = {
-  removeComments: true,
+  // removeComments: true,
   collapseWhitespace: true,
   removeRedundantAttributes: true,
   useShortDoctype: true,
@@ -20,19 +23,11 @@ const minify = {
   minifyURLs: true,
 };
 
-const config = {
-  mode: isProd ? 'production' : 'development',
-  entry: ['react-hot-loader/patch', path.resolve(__dirname, './src/index.js')],
-  output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: isProd ? '[name].[chunkhash:8].js' : '[name].js',
-    chunkFilename: isProd ? '[name].chunk.[chunkhash:8].js' : '[name].chunk.js',
-    publicPath: isDev ? '/' : '/',
-  },
-  devtool: isProd ? false : 'inline-source-map',
-  resolve: {
-    extensions: ['.js', '.jsx', '.styl'],
-  },
+const config = merge(baseWebpackConfig, {
+  entry: [
+    'react-hot-loader/patch',
+    path.resolve(__dirname, '../src/entry-client.js'),
+  ],
   module: {
     rules: [
       {
@@ -52,9 +47,9 @@ const config = {
       {
         test: /\.css$/,
         use: [
-          isProd
-            ? { loader: MiniCssExtractPlugin.loader }
-            : { loader: 'style-loader' },
+          isDev
+            ? { loader: 'style-loader' }
+            : { loader: MiniCssExtractPlugin.loader },
           {
             loader: 'css-loader',
           },
@@ -63,9 +58,9 @@ const config = {
       {
         test: /\.styl$/,
         use: [
-          isProd
-            ? { loader: MiniCssExtractPlugin.loader }
-            : { loader: 'style-loader' },
+          isDev
+            ? { loader: 'style-loader' }
+            : { loader: MiniCssExtractPlugin.loader },
           {
             loader: 'css-loader',
           },
@@ -78,7 +73,7 @@ const config = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
+          limit: 2048,
           name: '/static/img/[name].[contenthash:8].[ext]',
         },
       },
@@ -89,7 +84,6 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV.trim()),
         __DEV__: isDev,
-        __PROD__: isProd,
         BASE_API: isDev ? "'/api'" : "''",
       },
     }),
@@ -107,51 +101,14 @@ const config = {
       template: 'index.html',
       minify: isDev ? {} : minify,
     }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
   ],
-};
+});
 
 if (isDev) {
-  config.devServer = {
-    open: true,
-    hot: true,
-    contentBase: path.join(__dirname, 'dist'),
-    host: 'localhost',
-    port: 1215,
-    clientLogLevel: 'warning',
-    compress: true,
-    historyApiFallback: true,
-    // quiet: true
-    proxy: {
-      '/api/*': {
-        target: 'http://localhost:3000/',
-        changeOrigin: true,
-        pathRewrite: { '^/api': '' },
-      },
-    },
-  };
-} else {
-  config.optimization = {
-    runtimeChunk: 'single',
-    splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      minChunks: 1,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          // eslint-disable-next-line no-unused-vars
-          name(module, chunks, chcheGroupKey) {
-            const packageName = module.context.match(
-              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-            )[1];
-            return `${packageName.replace('@', '')}`;
-          },
-        },
-      },
-    },
-  };
+  config.plugins.push(
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  );
 }
+
 module.exports = config;
