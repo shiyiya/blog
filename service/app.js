@@ -26,11 +26,13 @@ app.use(
   }),
 );
 
+const R = routes(router);
+
 app
   .use(logger())
   .use(cors())
   .use(parser())
-  .use(routes(router))
+  .use(R.routes(), R.allowedMethods())
   .use(koaStatic(path.join(__dirname, 'public')));
 
 app.listen(3000, 'localhost', () => {

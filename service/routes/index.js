@@ -28,5 +28,5 @@ module.exports = (router) => {
   // 评论文章 | 回复他人评论 comentid
   // router.post('/post/:post_id/comment',post)
 
-  return router.routes();
+  return router;
 };

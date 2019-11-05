@@ -30,7 +30,7 @@ exports.findUserByname = name => query(`select name,password from users where na
 
 exports.findUserByToken = token => query(`select * from users where token='${token}';`);
 
-exports.setUserRoles = (user_id, role_id) => query('insert into users_role set user_id=?,role_id=?;', [user_id, role_id]);
+exports.setUserRoles = (userId, roleId) => query('insert into users_role set user_id=?,role_id=?;', [userId, roleId]);
 
 exports.updateUserToken = value => query('update users set token=? where name=?', value);
 

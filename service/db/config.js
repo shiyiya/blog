@@ -41,7 +41,7 @@ const roles_permission = [
 const blogInfo = {
   name: 'Hello World',
   meta: {
-    descript: 'Hello World',
+    description: 'Hello World',
     keyword: '',
   },
   // 首页每页显示多少条数据 | false 不分页
